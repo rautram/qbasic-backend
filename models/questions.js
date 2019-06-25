@@ -1,5 +1,25 @@
 const mongoose = require("../database/mongodb");
 
+const reportSchema = mongoose.Schema({
+  reportBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "user",
+    unique: true
+  },
+  report: { type: String, required: true }
+});
+
+const responseSchema = mongoose.Schema({
+  responseBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "user",
+    unique: true
+  },
+  response: { type: Number, required: true, default: 0 }
+});
+
 const answerSchema = mongoose.Schema({
   answer: { type: String, required: true },
   answerBy: {
@@ -7,21 +27,8 @@ const answerSchema = mongoose.Schema({
     required: true,
     ref: "user"
   },
-  reports: [{ type: String, required: true }],
-  helpful: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "user"
-    }
-  ],
-  unhelpful: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "user"
-    }
-  ]
+  reports: [reportSchema],
+  response: [responseSchema]
 });
 
 const questionSchema = mongoose.Schema({
@@ -32,12 +39,10 @@ const questionSchema = mongoose.Schema({
     ref: "user"
   },
   askedAt: { type: Date, required: true, default: Date.now() },
-  chapter: { type: String, required: false },
+  tag: { type: String, required: true, default: "Simple Question" },
   description: { type: String, required: false },
-  reports: [{ type: String, required: true }],
-  response: [
-    { type: mongoose.Schema.Types.ObjectId, required: true, ref: "user" }
-  ],
+  reports: [reportSchema],
+  response: [responseSchema],
   answers: [answerSchema]
 });
 
