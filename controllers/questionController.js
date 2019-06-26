@@ -22,6 +22,7 @@ exports.addQuestion = (req, res) => {
 exports.getQuestion = (req, res) => {
   Question.findById({ _id: req.params.id })
     .populate("askedBy")
+    .populate("answers.answerBy")
     .then(questions => {
       res.send(questions);
     })
@@ -33,15 +34,15 @@ exports.getQuestion = (req, res) => {
     });
 };
 
-exports.addAnswer = (req, res) => {
-  Question.findById({ _id: req.body.id })
-    .then(question => {
+exports.addAnswer = async (req, res) => {
+  await Question.findById({ _id: req.body.id })
+    .then(async question => {
       console.log(question);
       question.answers.push({
         answer: req.body.answer,
         answerBy: req.body.answerBy
       });
-      question.save();
+      await question.save();
     })
     .then(data => {
       res.send({
