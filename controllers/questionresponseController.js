@@ -5,7 +5,7 @@ const QuestionResponse = sequelize.import(
 const uuidv4 = require("uuid/v4");
 const getCode = require("../util/getCode");
 
-exports.addQuestion = async (req, res) => {
+exports.addResponseToQuestion = async (req, res) => {
   const questionresponseid = getCode(uuidv4());
   await QuestionResponse.create({
     questionresponseid: questionresponseid,
