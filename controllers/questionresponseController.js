@@ -1,14 +1,16 @@
 const sequelize = require("../util/database");
-const Question = sequelize.import(__dirname + "/../models/question");
+const QuestionResponse = sequelize.import(
+  __dirname + "/../models/questionresponse"
+);
 const uuidv4 = require("uuid/v4");
 const getCode = require("../util/getCode");
 
 exports.addQuestion = async (req, res) => {
-  const questionid = getCode(uuidv4());
-  await Question.create({
-    questionid: questionid,
-    userid: req.body.userid,
-    question: req.body.question
+  const questionresponseid = getCode(uuidv4());
+  await QuestionResponse.create({
+    questionresponseid: questionresponseid,
+    questionid: req.body.questionid,
+    response: req.body.response
   })
     .then(data => {
       res.send({ data });

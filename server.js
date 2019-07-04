@@ -1,22 +1,27 @@
 const express = require("express");
-const cors = require("cors");
 const bodyParser = require("body-parser");
-const userRoute = require("./routes/userRoute");
-const questionRoute = require("./routes/questionRoute");
+const sequelize = require("./util/database");
 
-const mongoose = require("./database/mongodb");
-
+const userRoute = require("./routes/userRoutes");
 const app = express();
-const PORT = process.env.PORT || 6000;
-app.use(cors());
+
 app.use(bodyParser.json());
 
-// app.use(bodyParser.urlencoded({ extended: false }));
+app.get("/", (req, res) => {
+  res.send({ message: "Welcome to Qbasic app" });
+});
 
 app.use("/user", userRoute);
 
-app.use("/question", questionRoute);
+const PORT = process.env.PORT || 7000;
 
-app.listen(PORT, () => {
-  console.log("Server is runnig at port ", PORT);
-});
+sequelize
+  .sync({ force: false })
+  .then(result => {
+    app.listen(PORT, () => {
+      console.log("Server running at ", PORT);
+    });
+  })
+  .catch(err => {
+    console.log(err);
+  });

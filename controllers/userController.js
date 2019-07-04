@@ -1,33 +1,24 @@
-const mongoose = require("../database/mongodb");
-const User = require("../models/user");
-exports.addUser = (req, res) => {
-  const data = {
-    name: req.body.name,
-    email: req.body.email,
-    device_id: req.body.device_id,
-    phoneNumber: req.body.phoneNumber
-  };
-  User.create(data)
-    .then(data => res.send({ data }))
-    .catch(err => res.send({ err }));
-};
+const sequelize = require("../util/database");
+const User = sequelize.import(__dirname + "/../models/user");
+const uuidv4 = require("uuid/v4");
+const getCode = require("../util/getCode");
 
-exports.getUser = (req, res) => {
-  const pageNumber = req.params.pageNumber;
-  const pageSize = 10;
-  User.find({})
-    .skip((pageNumber - 1) * pageSize)
-    .limit(10)
-    .then(user => {
+exports.addUser = async (req, res) => {
+  await User.create({
+    userid: getCode(uuidv4()),
+    email: req.body.email,
+    phonenumber: req.body.phonenumber,
+    name: req.body.name,
+    valid: true,
+    deviceid: req.body.deviceid
+  })
+    .then(data => {
       res.send({
-        error: false,
-        user: user
+        data: data,
+        message: "User Successfully Created"
       });
     })
     .catch(err => {
-      res.send({
-        error: true,
-        err: err
-      });
+      res.status(205).send({ err });
     });
 };
