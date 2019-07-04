@@ -10,7 +10,8 @@ exports.addUser = async (req, res) => {
     phonenumber: req.body.phonenumber,
     name: req.body.name,
     valid: true,
-    deviceid: req.body.deviceid
+    device_id: req.body.deviceid,
+    createdAt: new Date().toISOString()
   })
     .then(data => {
       res.send({

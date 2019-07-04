@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const sequelize = require("./util/database");
 
 const userRoute = require("./routes/userRoutes");
+const questionRoute = require("./routes/questionRoute");
+const questionResponseRoute = require("./routes/questionResponseRoute");
 const app = express();
 
 app.use(bodyParser.json());
@@ -12,6 +14,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRoute);
+app.use("/question", questionRoute);
+app.use("/response/question", questionResponseRoute);
 
 const PORT = process.env.PORT || 7000;
 

@@ -8,7 +8,8 @@ exports.addQuestion = async (req, res) => {
   await Question.create({
     questionid: questionid,
     userid: req.body.userid,
-    question: req.body.question
+    question: req.body.question,
+    createdat: new Date().toISOString()
   })
     .then(data => {
       res.send({ data });
