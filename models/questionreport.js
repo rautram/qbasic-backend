@@ -1,8 +1,8 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('questionresponse', {
-		questionresponseid: {
+	return sequelize.define('questionreport', {
+		questionreportid: {
 			type: DataTypes.STRING(32),
 			allowNull: false,
 			primaryKey: true
@@ -15,8 +15,8 @@ module.exports = function(sequelize, DataTypes) {
 				key: 'questionid'
 			}
 		},
-		response: {
-			type: DataTypes.INTEGER(1),
+		report: {
+			type: DataTypes.TEXT,
 			allowNull: false
 		},
 		userid: {
@@ -36,6 +36,6 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: true
 		}
 	}, {
-		tableName: 'questionresponse'
+		tableName: 'questionreport'
 	});
 };

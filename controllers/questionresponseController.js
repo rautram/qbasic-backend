@@ -10,7 +10,9 @@ exports.addResponseToQuestion = async (req, res) => {
   await QuestionResponse.create({
     questionresponseid: questionresponseid,
     questionid: req.body.questionid,
-    response: req.body.response
+    response: req.body.response,
+    userid: req.body.userid,
+    createdat: new Date().toISOString()
   })
     .then(data => {
       res.send({ data });
