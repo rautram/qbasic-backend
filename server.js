@@ -5,6 +5,9 @@ const sequelize = require("./util/database");
 const userRoute = require("./routes/userRoutes");
 const questionRoute = require("./routes/questionRoute");
 const questionResponseRoute = require("./routes/questionResponseRoute");
+const questionReportRoute = require("./routes/questionReportRoute");
+const questionAnswerRoute = require("./routes/questionAnswerRoute");
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -16,6 +19,10 @@ app.get("/", (req, res) => {
 app.use("/user", userRoute);
 app.use("/question", questionRoute);
 app.use("/response/question", questionResponseRoute);
+
+app.use("/report/question", questionReportRoute);
+
+app.use("/get/qna", questionAnswerRoute);
 
 const PORT = process.env.PORT || 7000;
 
