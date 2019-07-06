@@ -1,9 +1,12 @@
 const Sequelize = require("../util/database");
 
 exports.getQuestionAnswerByUser = async (req, res) => {
-  await Sequelize.query(`SELECT * from question inner join questionreport`, {
-    type: Sequelize.QueryTypes.SELECT
-  })
+  await Sequelize.query(
+    `select q.question, q.userid, qr.report, qr.userid from question as q inner join questionreport as qr on q.userid = qr.userid `,
+    {
+      type: Sequelize.QueryTypes.SELECT
+    }
+  )
     .then(data => {
       res.send({ data });
     })

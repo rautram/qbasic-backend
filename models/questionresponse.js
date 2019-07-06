@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.INTEGER(1),
 			allowNull: false
 		},
-		userid: {
+		questionresponseby: {
 			type: DataTypes.STRING(32),
 			allowNull: false,
 			references: {
