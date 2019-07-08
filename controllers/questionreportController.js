@@ -12,7 +12,7 @@ exports.addReportToQuestion = async (req, res) => {
     questionreportid: questionreportid,
     questionid: req.body.questionid,
     report: req.body.report,
-    userid: req.body.userid,
+    reportby: req.body.userid,
     createdat: new Date().toISOString()
   })
     .then(data => {
