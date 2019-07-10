@@ -8,6 +8,8 @@ const questionResponseRoute = require("./routes/questionResponseRoute");
 const questionReportRoute = require("./routes/questionReportRoute");
 const questionAnswerRoute = require("./routes/questionAnswerRoute");
 
+const answerRoute = require("./routes/answerRoute");
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -23,6 +25,7 @@ app.use("/response/question", questionResponseRoute);
 app.use("/report/question", questionReportRoute);
 
 app.use("/get/qna", questionAnswerRoute);
+app.use("/answer", answerRoute);
 
 const PORT = process.env.PORT || 7000;
 

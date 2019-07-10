@@ -26,3 +26,18 @@ exports.getQuestionAnswerByUser = async (req, res) => {
       res.status(205).send({ err });
     });
 };
+
+exports.getQuestionsList = async (req, res) => {
+  await Sequelize.query(
+    `select q.question, count(a.answer) as total from question q left join answers a on q.questionid = a.questionid group by q.questionid`,
+    {
+      type: Sequelize.QueryTypes.SELECT
+    }
+  )
+    .then(data => {
+      res.send({ data });
+    })
+    .catch(err => {
+      res.send({ err });
+    });
+};
