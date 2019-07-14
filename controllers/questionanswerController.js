@@ -98,3 +98,24 @@ exports.updateQuestion = async (req, res) => {
       res.status(206).send({ message: "Server error occured" });
     });
 };
+
+exports.deleteQuestion = async (req, res) => {
+  const id = req.params.questionid;
+  await Sequelize.query(`delete questionreport where questionid ="${id}"`, {
+    type: Sequelize.QueryTypes.DELETE
+  })
+    .then(data => {
+      Sequelize.query(`delete question where questionid = "${id}"`, {
+        type: Sequelize.QueryTypes.DELETE
+      })
+        .then(data => {
+          res.send({ message: "successfully deleted" });
+        })
+        .catch(err => {
+          res.status(205).send({ message: "error occured" });
+        });
+    })
+    .catch(err => {
+      res.status(300).send({ err });
+    });
+};
