@@ -28,8 +28,11 @@ exports.getQuestionAnswerByUser = async (req, res) => {
 };
 
 exports.getQuestionsList = async (req, res) => {
+  const limit = 5;
+  const pageSize = req.params.pageSize;
+  const offset = (pageSize - 1) * limit;
   await Sequelize.query(
-    `select q.question, count(a.answer) as total from question q left join answers a on q.questionid = a.questionid group by q.questionid`,
+    `SELECT q.questionid, q.question, COUNT(a.answer) as total from (SELECT * from question limit ${limit} OFFSET ${offset}) as q left join answers as a on q.questionid = a.questionid GROUP BY q.questionid;`,
     {
       type: Sequelize.QueryTypes.SELECT
     }
@@ -39,5 +42,59 @@ exports.getQuestionsList = async (req, res) => {
     })
     .catch(err => {
       res.send({ err });
+    });
+};
+
+exports.getQuestionReport = async (req, res) => {
+  const limit = 10;
+  const pageSize = req.params.pageSize;
+  const offset = (pageSize - 1) * limit;
+  await Sequelize.query(
+    `SELECT questionid, question, (SELECT COUNT(answerid) from answers WHERE questionid = question.questionid) as total_answer, (SELECT COUNT(questionreportid) from questionreport WHERE questionid = question.questionid ) as report_count from question LIMIT ${limit} OFFSET ${offset};`,
+    {
+      type: Sequelize.QueryTypes.SELECT
+    }
+  )
+    .then(data => {
+      res.send({ data });
+    })
+    .catch(err => {
+      res.status(205).send({ err });
+    });
+};
+
+exports.updateQuestion = async (req, res) => {
+  const questionid = req.body.questionid;
+  const question = req.body.question;
+  await Sequelize.query(
+    `select answer from answers where questionid = "${questionid}"`,
+    {
+      type: Sequelize.QueryTypes.SELECT
+    }
+  )
+    .then(data => {
+      if (data.length > 0) {
+        res
+          .status(205)
+          .send({ message: "This question contains answer so can't update" });
+      } else {
+        Sequelize.query(
+          `update question set question = "${question}" where questionid = "${questionid}"`,
+          {
+            type: Sequelize.QueryTypes.UPDATE
+          }
+        )
+          .then(data => {
+            res.send({
+              message: "Question successfully updated"
+            });
+          })
+          .catch(err => {
+            res.status(206).send({ message: "Server error occured" });
+          });
+      }
+    })
+    .catch(err => {
+      res.status(206).send({ message: "Server error occured" });
     });
 };
