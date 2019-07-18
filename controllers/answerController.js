@@ -39,17 +39,32 @@ exports.addAnswerReport = async (req, res) => {
     });
 };
 
-exports.getAnswerReport = async (req, res) => {
-  await Sequelize.query(
-    `SELECT a.answer, u1.name as "answerby",ar.answerreportid, ar.reportanswer, u2.name as "reportby" from answers a inner join user u1 on a.answerby = u1.userid left join answerreport ar on a.answerid = ar.answerid left JOIN user u2 on ar.answerreportby = u2.userid WHERE a.questionid = "7dbacedc8df84009ba3a96d61285e76c";`,
+exports.getAnswerReport = (req, res) => {
+  Sequelize.query(
+    `SELECT a.answerid, a.answer, u1.name as "answerby",ar.answerreportid, ar.reportanswer, u2.name as "reportby" from answers a inner join user u1 on a.answerby = u1.userid left join answerreport ar on a.answerid = ar.answerid left JOIN user u2 on ar.answerreportby = u2.userid WHERE a.questionid = "7dbacedc8df84009ba3a96d61285e76c";`,
     {
       type: Sequelize.QueryTypes.SELECT
     }
   )
     .then(data => {
-      res.send({ data });
+      var newData = [];
+      newData.push(data[0]);
+      data.map((item, index) => {
+        const id = item.answerid;
+        var count = 0;
+        data.map(items => {
+          if (id === items.answerid && id !== data[0].answerid) {
+            count = count + 1;
+          }
+        });
+        if (count === 1) {
+          console.log("I am here");
+          newData.push(item);
+        }
+      });
+      res.send({ newData: newData, data: data });
     })
     .catch(err => {
-      res.status(205).send({ err });
+      res.status(205).send({ mesage: "oops error" });
     });
 };
