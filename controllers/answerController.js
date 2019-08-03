@@ -40,29 +40,36 @@ exports.addAnswerReport = async (req, res) => {
 };
 
 exports.getAnswerReport = (req, res) => {
+  const pageSize = req.params.pageSize;
+  const limit = 1;
+  const skip = (pageSize - 1) * limit;
   Sequelize.query(
-    `SELECT a.answerid, a.answer, u1.name as "answerby",ar.answerreportid, ar.reportanswer, u2.name as "reportby" from answers a inner join user u1 on a.answerby = u1.userid left join answerreport ar on a.answerid = ar.answerid left JOIN user u2 on ar.answerreportby = u2.userid WHERE a.questionid = "7dbacedc8df84009ba3a96d61285e76c";`,
+    `SELECT a.answerid, a.answer, u1.name as "answerby",ar.answerreportid, ar.reportanswer, u2.name as "reportby" from answers a limit=${limit} offset=${skip} inner join user u1 on a.answerby = u1.userid left join answerreport ar on a.answerid = ar.answerid left JOIN user u2 on ar.answerreportby = u2.userid WHERE a.questionid = "7dbacedc8df84009ba3a96d61285e76c";`,
     {
       type: Sequelize.QueryTypes.SELECT
     }
   )
-    .then(data => {
-      var newData = [];
-      newData.push(data[0]);
-      data.map((item, index) => {
-        const id = item.answerid;
-        var count = 0;
-        data.map(items => {
-          if (id === items.answerid && id !== data[0].answerid) {
-            count = count + 1;
-          }
-        });
-        if (count === 1) {
-          console.log("I am here");
-          newData.push(item);
+    .then(rows => {
+      var result = [],
+        index = {};
+      rows.forEach(row => {
+        if (!(row.answerid in index)) {
+          index[row.answerid] = {
+            answerid: row.answerid,
+            answer: row.answer,
+            answerby: row.answerby,
+            reports: []
+          };
+          result.push(index[row.answerid]);
+        }
+        if (row.reportanswer !== null) {
+          index[row.answerid].reports.push({
+            reportanswer: row.reportanswer,
+            reportby: row.reportby
+          });
         }
       });
-      res.send({ newData: newData, data: data });
+      res.send({ result });
     })
     .catch(err => {
       res.status(205).send({ mesage: "oops error" });

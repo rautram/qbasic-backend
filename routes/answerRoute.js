@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post("/add", answerController.addAnswer);
 router.post("/add/report", answerController.addAnswerReport);
-router.get("/get", answerController.getAnswerReport);
+router.get("/get/:pageSize", answerController.getAnswerReport);
 
 module.exports = router;
