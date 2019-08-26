@@ -7,7 +7,7 @@ const questionRoute = require("./routes/questionRoute");
 const questionResponseRoute = require("./routes/questionResponseRoute");
 const questionReportRoute = require("./routes/questionReportRoute");
 const questionAnswerRoute = require("./routes/questionAnswerRoute");
-
+const mongoRoute = require("./routes/mongoRoute");
 const answerRoute = require("./routes/answerRoute");
 
 const app = express();
@@ -17,6 +17,8 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.send({ message: "Welcome to Qbasic app" });
 });
+
+app.use("/mongo", mongoRoute);
 
 app.use("/user", userRoute);
 app.use("/question", questionRoute);
