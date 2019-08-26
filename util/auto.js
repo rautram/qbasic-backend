@@ -1,5 +1,5 @@
 var SequelizeAuto = require("sequelize-auto");
-var auto = new SequelizeAuto("zntMPWelx3", "zntMPWelx3", "tkHMgb1v4r", {
+var auto = new SequelizeAuto("Zu8Hc7dE5w", "Zu8Hc7dE5w", "IbOqmd9C3j", {
   host: "remotemysql.com",
   dialect: "mysql",
   port: 3306

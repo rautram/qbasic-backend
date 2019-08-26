@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const sequelize = require("./util/database");
-
+const mongoose = require("./database/mongodb");
 const userRoute = require("./routes/userRoutes");
 const questionRoute = require("./routes/questionRoute");
 const questionResponseRoute = require("./routes/questionResponseRoute");
