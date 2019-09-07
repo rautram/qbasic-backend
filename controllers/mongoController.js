@@ -27,3 +27,19 @@ exports.getQuestion = async (req, res) => {
     res.status(205).send({ err });
   }
 };
+
+exports.deleteQuestion = async (req, res) => {
+  const questionid = req.params.questionid;
+  try {
+    const deleted = await QnaModel.findByIdAndDelete(questionid);
+    res.send({
+      haserr: false,
+      deleted: deleted
+    });
+  } catch (err) {
+    res.send({
+      haserr: true,
+      deleted: false
+    });
+  }
+};
