@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const sequelize = require("./util/database");
 const mongoose = require("./database/mongodb");
@@ -11,6 +12,8 @@ const mongoRoute = require("./routes/mongoRoute");
 const answerRoute = require("./routes/answerRoute");
 
 const app = express();
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
