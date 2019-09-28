@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
-  "mysql://Zu8Hc7dE5w:IbOqmd9C3j@remotemysql.com:3306/Zu8Hc7dE5w",
+  "mysql://sghSHRzC1o:iE6sLNC5wr@remotemysql.com:3306/sghSHRzC1o",
   {
     host: "remotemysql.com",
     dialect: "mysql",
