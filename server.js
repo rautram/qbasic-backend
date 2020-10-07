@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const sequelize = require("./util/database");
+// const sequelize = require("./util/database");
 const mongoose = require("./database/mongodb");
 const userRoute = require("./routes/userRoutes");
 const questionRoute = require("./routes/questionRoute");
@@ -34,13 +34,6 @@ app.use("/answer", answerRoute);
 
 const PORT = process.env.PORT || 7000;
 
-sequelize
-  .sync({ force: false })
-  .then(result => {
-    app.listen(PORT, () => {
-      console.log("Server running at ", PORT);
-    });
-  })
-  .catch(err => {
-    console.log(err);
-  });
+app.listen(PORT, () => {
+  console.log("Server running at ", PORT);
+});
